@@ -7,3 +7,23 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  ADMIN
+  SUPPORT_AGENT
+  EMPLOYEE
+}
+
+enum IncidentStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum IncidentPriority {
+  P1
+  P2
+  P3
+  P4
+}
