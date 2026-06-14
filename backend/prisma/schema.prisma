@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -26,4 +26,50 @@ enum IncidentPriority {
   P2
   P3
   P4
+}
+
+model Organization {
+  id   String @id @default(uuid())
+
+  name String @unique
+
+  users User[]
+  incidents Incident[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}      
+
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  fullName String
+  role     UserRole
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  reportedIncidents Incident[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Incident {
+  id String @id @default(uuid())
+
+  title       String
+  description String
+
+  status   IncidentStatus   @default(OPEN)
+  priority IncidentPriority @default(P3)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  reporterId String
+  reporter   User   @relation(fields: [reporterId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -23,8 +23,6 @@ let StartupSafetyService = StartupSafetyService_1 = class StartupSafetyService {
         const nodeEnv = this.configService.get('nodeEnv');
         const port = this.configService.get('port');
         const databaseUrl = this.configService.get('database.url');
-        this.logger.log(`NODE_ENV: ${nodeEnv}`);
-        this.logger.log(`PORT: ${port}`);
         this.logger.log(`DATABASE_URL: ${databaseUrl}`);
         if (!nodeEnv) {
             throw new Error('Startup Safety Check Failed: NODE_ENV is missing');
