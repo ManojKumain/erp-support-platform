@@ -22,6 +22,9 @@ export class StartupSafetyService {
       this.configService.get<string>(
         'database.url',
       );
+    this.logger.log(
+      `DATABASE_URL: ${databaseUrl}`,
+    )
 
     if (!nodeEnv) {
       throw new Error(
