@@ -2,32 +2,32 @@
 
 ## Project Overview
 
-ERP Support Platform is a multi-tenant SaaS application designed to reduce operational downtime for businesses using ERP systems.
+ERP Support Platform is a multi-tenant SaaS application designed to reduce operational downtime for organizations using ERP systems.
 
-The platform is not being built as a traditional ticketing system.
+The system is not intended to be a traditional ticketing tool.
 
 Primary objective:
 
-> Reduce operational downtime through guided support workflows, intelligent issue routing, knowledge management, and support automation.
+> Reduce operational downtime through guided support workflows, structured incident management, intelligent routing, and operational visibility.
 
 ---
 
 # Product Vision
 
-The system should:
+The platform should:
 
-* Reduce user panic
-* Help users explain issues clearly
+* Reduce user panic during incidents
+* Help users describe issues clearly
 * Route issues correctly
-* Accelerate resolution
-* Improve customer visibility
+* Accelerate resolution time
+* Improve visibility for customers
 * Reduce support workload
 * Build operational trust
 
 Target users:
 
 1. Customer Employees
-2. Customer Admins
+2. Customer Administrators
 3. Support Agents
 4. Internal ERP Engineers
 
@@ -35,13 +35,15 @@ Target users:
 
 # Development Philosophy
 
-The project follows first-principles thinking.
-
-Core rule:
+Core principle:
 
 > Build the smallest correct system first and evolve through iteration.
 
-Process followed:
+Current strategy:
+
+> Deliver an MVP suitable for academic demonstration and practical evaluation first, then expand toward the complete SaaS vision.
+
+Development flow:
 
 1. Problem Discovery
 2. User Workflow Mapping
@@ -52,7 +54,7 @@ Process followed:
 7. Database Design
 8. Frontend Architecture
 9. Automation Layer
-10. Analytics & Continuous Improvement
+10. Analytics
 
 ---
 
@@ -66,9 +68,9 @@ Completed:
 * Information Architecture
 * Domain Model
 * UX Wireframes
-* Backend API Design
-* Database Schema Design
-* Frontend System Architecture
+* Backend Architecture
+* Database Architecture
+* Frontend Architecture
 
 Status:
 
@@ -84,8 +86,8 @@ Completed:
 
 * Git Repository
 * Documentation Structure
-* Architecture Documentation
 * ADR Foundation
+* Monorepo Decision
 
 Status:
 
@@ -97,67 +99,23 @@ COMPLETE
 
 Completed:
 
-* NestJS Application Bootstrap
-* Project Structure
-* Prisma Setup
+* NestJS Bootstrap
+* TypeScript Configuration
+* Module Architecture
+* Prisma Installation
 * PrismaService
 * PrismaModule
-* AppModule Registration
+* PostgreSQL Integration
 * Docker Setup
-* PostgreSQL Setup
-* Configuration Foundation
-* Joi Installation
-* Environment Validation Schema
-* Configuration Files
-* TypeScript Node Configuration Fix
-* ConfigModule.forRoot()
-* Environment Validation Enforcement
+* Environment Configuration
+* Joi Validation
+* ConfigModule Setup
 * Startup Safety Checks
-* Application Boot Protection
 * Database Health Verification
-* Startup Logging Foundation
+* Startup Logging
+* Application Boot Protection
 
-Current backend structure:
-
-src/
-├── app.module.ts
-├── main.ts
-├── common/
-├── config/
-├── database/
-├── infrastructure/
-└── modules/
-
-Infrastructure structure:
-
-src/infrastructure/
-├── startup/
-│   ├── startup.module.ts
-│   └── startup-safety.service.ts
-└── health/
-├── health.module.ts
-└── database-health.service.ts
-
-Modules:
-
-* analytics
-* auth
-* chat
-* incidents
-* knowledge
-* notifications
-* organizations
-* tickets
-* users
-
-Current database layer:
-
-src/database/
-├── prisma.module.ts
-├── prisma.service.ts
-└── repositories/
-
-Current startup flow:
+Current Startup Flow:
 
 Application Start
 ↓
@@ -165,7 +123,7 @@ Environment Validation
 ↓
 Startup Safety Validation
 ↓
-Database Health Verification
+Database Verification
 ↓
 Application Listen
 ↓
@@ -174,6 +132,182 @@ Startup Complete
 Status:
 
 COMPLETE
+
+---
+
+## Phase C - Database Design Sprint
+
+### C1 Database Modeling
+
+Completed:
+
+#### Enums
+
+UserRole
+
+* ADMIN
+* SUPPORT_AGENT
+* EMPLOYEE
+
+IncidentStatus
+
+* OPEN
+* IN_PROGRESS
+* RESOLVED
+* CLOSED
+
+IncidentPriority
+
+* P1
+* P2
+* P3
+* P4
+
+#### Organization Model
+
+Fields:
+
+* id
+* name
+* createdAt
+* updatedAt
+
+Relationships:
+
+* users
+* incidents
+
+#### User Model
+
+Fields:
+
+* id
+* email
+* fullName
+* role
+* organizationId
+* createdAt
+* updatedAt
+
+Relationships:
+
+* organization
+* reportedIncidents
+
+#### Incident Model
+
+Fields:
+
+* id
+* title
+* description
+* status
+* priority
+* organizationId
+* reporterId
+* createdAt
+* updatedAt
+
+Relationships:
+
+* organization
+* reporter
+
+Status:
+
+COMPLETE
+
+---
+
+### C2 Database Migration
+
+Completed:
+
+* PostgreSQL Database Created
+* Database Name: erp_support
+* Prisma Migration Initialized
+* Initial Migration Applied
+* Organization Unique Constraint Added
+* Prisma Client Generated
+
+Current Migration History:
+
+* init
+* add_organization_unique_name
+
+Status:
+
+COMPLETE
+
+---
+
+### C3 Database Seeding
+
+Planned:
+
+* Seed Organizations
+* Seed Users
+* Seed Incidents
+* Create Demo Data
+
+Status:
+
+NEXT
+
+---
+
+### C4 CRUD APIs
+
+Planned:
+
+* Organization CRUD
+* User CRUD
+* Incident CRUD
+
+Status:
+
+PENDING
+
+---
+
+# Current Database Schema
+
+Organization
+
+* id
+* name (unique)
+
+User
+
+* id
+* email (unique)
+* fullName
+* role
+* organizationId
+
+Incident
+
+* id
+* title
+* description
+* status
+* priority
+* organizationId
+* reporterId
+
+Relationships:
+
+Organization
+↓
+Users
+
+Organization
+↓
+Incidents
+
+User
+↓
+Reported Incidents
 
 ---
 
@@ -191,7 +325,7 @@ Backend
 
 * NestJS
 * TypeScript
-* Prisma
+* Prisma ORM
 
 Database
 
@@ -205,53 +339,53 @@ Future Infrastructure
 
 * Redis
 * BullMQ
-* S3 Storage
+* S3
 * Elasticsearch
 
 ---
 
 # Architecture Principles
 
-## 1. Multi-Tenant Architecture
+## Multi-Tenant Architecture
 
-Every business entity must be scoped by organization.
+Every tenant-owned record must belong to an organization.
 
-organization_id is required across tenant-owned entities.
+organizationId is mandatory on tenant-owned entities.
 
 ---
 
-## 2. Domain-Driven Structure
+## Domain-Driven Structure
 
-Business modules are separated by domain:
+Domains:
 
-* Users
 * Organizations
-* Tickets
+* Users
+* Incidents
+* Knowledge
 * Notifications
-* Knowledge Base
 * Analytics
+* Authentication
 
 ---
 
-## 3. Infrastructure Separation
+## Infrastructure Separation
 
-Technical concerns belong in infrastructure.
+Infrastructure concerns remain isolated from business logic.
 
 Examples:
 
 * Startup Validation
-* Health Verification
-* Mail
+* Health Checks
+* Logging
 * Storage
-* Queue
-* Cache
+* Queues
 * Monitoring
 
 ---
 
-## 4. Shared Components
+## Shared Components
 
-Reusable application logic belongs in common.
+Reusable logic belongs in common.
 
 Examples:
 
@@ -265,114 +399,135 @@ Examples:
 
 # Branch Strategy
 
-Branching model:
+Model:
 
 Trunk-Based Development
 
 Rules:
 
-* main is always releasable
-* small feature branches
-* short-lived branches
-* frequent integration
+* main is always deployable
+* short-lived feature branches
 * pull requests required
+* frequent integration
+
+Current completed branch:
+
+* feat/database-design
 
 ---
 
-# Ticket Lifecycle
+# MVP Scope
 
-OPEN
-↓
-TRIAGED
-↓
-ASSIGNED
-↓
-IN_PROGRESS
-↓
-WAITING_FOR_CUSTOMER
-↓
-RESOLVED
-↓
-CLOSED
+The MVP intentionally excludes:
+
+* Knowledge Base CRUD
+* Notifications
+* Analytics
+* Chat
+* Automation Workflows
+* Redis
+* Queue Processing
+
+These features will be implemented after academic evaluation.
 
 ---
 
-# Priority Model
+# Remaining MVP Roadmap
 
-P1 = High Impact + High Urgency
+## Phase C
 
-Examples:
+### Assignment 7
 
-* Payroll failure
-* Login outage
-* Billing outage
+Seed Database
 
-P2 = Low Impact + High Urgency
+### Assignment 8
 
-P3 = High Impact + Low Urgency
-
-P4 = Low Impact + Low Urgency
+Build CRUD APIs
 
 ---
 
-# Knowledge Base Philosophy
+## Phase D - Authentication
 
-Goal:
+* JWT Authentication
+* Login API
+* Password Hashing
+* Role Guards
+* Protected Routes
 
-Prevent tickets before they are created.
+---
 
-Article structure:
+## Phase E - Incident Module
 
-* Problem
-* Cause
-* Resolution Steps
+* Create Incident
+* List Incidents
+* Get Incident
+* Update Incident Status
+
+---
+
+## Phase F - Frontend
+
+* Login Screen
+* Dashboard
+* Incident Screens
+* API Integration
+
+---
+
+## Phase G - Demo Polish
+
+* Demo Data
+* Demo Accounts
+* README
 * Screenshots
-* Video
-* Escalation Path
+* Presentation Preparation
 
 ---
 
 # Current Development Stage
 
-Current milestone:
+Current Milestone:
 
-Phase B2 - Backend Foundation
+Phase C - Database Design Sprint
 
-Completed in current milestone:
+Current Assignment:
 
-✅ ConfigModule.forRoot()
+Assignment 7 - Seed Database
 
-✅ Environment Validation Enforcement
+Completed:
 
-✅ Startup Safety Checks
+✅ Database Modeling
 
-✅ Application Boot Protection
+✅ Database Migration
 
-✅ Database Health Verification
+✅ Prisma Client Generation
 
-✅ Startup Logging Foundation
+Next:
+
+➡️ Seed Database
+
+➡️ Build CRUD APIs
 
 ---
 
-# Next Backend Foundation Milestones
+# Important Project Decisions
 
-1. Global Exception Handling
+ADR-001
 
-2. Request Validation Pipeline
+Decision:
 
-3. Health Endpoint (/health)
+Monorepo Architecture
 
-4. API Versioning
+Reason:
 
-5. Structured Logging Foundation
-
-6. API Documentation Foundation (Swagger)
-
-7. Authentication Foundation
+* Easier onboarding
+* Easier development workflow
+* Simpler project management
+* Better visibility across the system
 
 Status:
 
-NEXT
+ACCEPTED
 
 ---
 
@@ -381,24 +536,27 @@ NEXT
 Assume:
 
 * Product Blueprinting is complete.
-* Backend Foundation is in progress.
-* PrismaService and PrismaModule exist.
-* Docker and PostgreSQL are running.
-* ConfigModule is configured globally.
-* Environment validation is enforced through Joi.
-* Startup safety validation exists.
-* Database health verification exists.
-* Application boot protection exists.
-* HealthModule exists.
-* StartupModule exists.
+* Backend Foundation is complete.
+* Database Modeling is complete.
+* Prisma Migrations are complete.
+* PostgreSQL database is running.
+* Database name is erp_support.
+* Prisma Client is generated.
+* Current schema is the source of truth.
 
-Continue implementation from the current milestone instead of redesigning previous phases.
+Current milestone:
 
-Always teach using:
+Phase C - Database Design Sprint
+
+Current assignment:
+
+Assignment 7 - Seed Database
+
+Teaching style required:
 
 * First Principles
 * Enterprise SaaS Thinking
-* Step-by-Step Guidance
+* Step-by-Step Assignments
 * Beginner-Friendly Explanations
 
 Act as a Top 1% SaaS Architect, Backend Engineer, and Mentor.
