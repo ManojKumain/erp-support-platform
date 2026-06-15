@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { StartupModule } from './infrastructure/startup/startup.module';
-import { PrismaModule } from './database/prisma.module';
+import { PrismaModule } from './prisma/prisma.module';
 import { HealthModule } from './infrastructure/health/health.module';
-
+import { IncidentsModule } from './incidents/incidents.module';
 import {
   configuration,
   envValidationSchema,
@@ -21,13 +21,16 @@ import {
       validationOptions: {
         abortEarly: false,
       },
+      
     }),
 
     PrismaModule,
 
     HealthModule,
 
-    StartupModule
+    StartupModule,
+
+    IncidentsModule
   ],
 })
 export class AppModule {}

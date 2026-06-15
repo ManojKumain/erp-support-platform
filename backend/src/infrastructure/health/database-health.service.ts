@@ -3,7 +3,7 @@ import {
   Logger,
 } from '@nestjs/common';
 
-import { PrismaService } from '../../database/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class DatabaseHealthService {

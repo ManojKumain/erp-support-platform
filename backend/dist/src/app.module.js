@@ -10,8 +10,9 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const startup_module_1 = require("./infrastructure/startup/startup.module");
-const prisma_module_1 = require("./database/prisma.module");
+const prisma_module_1 = require("./prisma/prisma.module");
 const health_module_1 = require("./infrastructure/health/health.module");
+const incidents_module_1 = require("./incidents/incidents.module");
 const config_2 = require("./config");
 let AppModule = class AppModule {
 };
@@ -29,7 +30,8 @@ exports.AppModule = AppModule = __decorate([
             }),
             prisma_module_1.PrismaModule,
             health_module_1.HealthModule,
-            startup_module_1.StartupModule
+            startup_module_1.StartupModule,
+            incidents_module_1.IncidentsModule
         ],
     })
 ], AppModule);
