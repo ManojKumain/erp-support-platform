@@ -1,4 +1,4 @@
-import { PrismaService } from '../../database/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 export declare class DatabaseHealthService {
     private readonly prisma;
     private readonly logger;

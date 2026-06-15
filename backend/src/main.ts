@@ -6,7 +6,7 @@ import { DatabaseHealthService } from "./infrastructure/health/database-health.s
 import { Logger } from "@nestjs/common";
 
 async function bootstrap() {
-  const logger = new Logger('Bootstrap');
+  const logger = new Logger("Bootstrap");
   const app = await NestFactory.create(AppModule);
 
   const startupSafetyService = app.get(StartupSafetyService);
@@ -19,7 +19,13 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  await app.listen(configService.get<number>("port") ?? 3000);
+  const port = configService.get<number>("port") ?? 3000;
+
+  logger.log(`Port resolved to: ${port}`);
+
+  await app.listen(port);
+
+  // await app.listen(configService.get<number>("port") ?? 3000);
 
   logger.log(`Application startup completed successfully`);
 }

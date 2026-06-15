@@ -8,34 +8,53 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var DatabaseHealthService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DatabaseHealthService = void 0;
+exports.IncidentsService = void 0;
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../../prisma/prisma.service");
-let DatabaseHealthService = DatabaseHealthService_1 = class DatabaseHealthService {
+const prisma_service_1 = require("../prisma/prisma.service");
+let IncidentsService = class IncidentsService {
     prisma;
-    logger = new common_1.Logger(DatabaseHealthService_1.name);
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async verify() {
-        try {
-            const result = await this.prisma.$queryRaw `
-      SELECT current_database()
-    `;
-            const databaseName = result[0]?.current_database || 'unknown_db';
-            this.logger.log(`Database health verification passed (${databaseName})`);
-        }
-        catch (error) {
-            this.logger.error('Database health verification failed', error);
-            throw error;
-        }
+    async findAll() {
+        return this.prisma.incident.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+    }
+    async findOne(id) {
+        return this.prisma.incident.findUnique({
+            where: {
+                id,
+            },
+        });
+    }
+    async create(data) {
+        return this.prisma.incident.create({
+            data,
+        });
+    }
+    async update(id, data) {
+        return this.prisma.incident.update({
+            where: {
+                id,
+            },
+            data,
+        });
+    }
+    async remove(id) {
+        return this.prisma.incident.delete({
+            where: {
+                id,
+            },
+        });
     }
 };
-exports.DatabaseHealthService = DatabaseHealthService;
-exports.DatabaseHealthService = DatabaseHealthService = DatabaseHealthService_1 = __decorate([
+exports.IncidentsService = IncidentsService;
+exports.IncidentsService = IncidentsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], DatabaseHealthService);
-//# sourceMappingURL=database-health.service.js.map
+], IncidentsService);
+//# sourceMappingURL=incidents.service.js.map
