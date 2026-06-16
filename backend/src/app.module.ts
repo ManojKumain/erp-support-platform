@@ -8,6 +8,7 @@ import {
   configuration,
   envValidationSchema,
 } from './config';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -30,7 +31,9 @@ import {
 
     StartupModule,
 
-    IncidentsModule
+    IncidentsModule,
+
+    AuthModule
   ],
 })
 export class AppModule {}

@@ -4,10 +4,19 @@ import { AppModule } from "./app.module";
 import { StartupSafetyService } from "./infrastructure/startup/startup-safety.service";
 import { DatabaseHealthService } from "./infrastructure/health/database-health.service";
 import { Logger } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
   const logger = new Logger("Bootstrap");
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
   const startupSafetyService = app.get(StartupSafetyService);
 
